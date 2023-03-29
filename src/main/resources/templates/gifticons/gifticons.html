@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <script>
+        function filterGifticonTable(state) {
+            const tableRows = document.querySelectorAll("#gifticonTable tbody tr");
+            tableRows.forEach(row => {
+                const rowState = row.cells[2].innerText;
+                if (state === "전체" || rowState === state) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>기프티콘 공유 프로젝트</h1>
+<h3>기프티콘 리스트</h3>
+<hr>
+<button type="button" th:onclick="|location.href='@{/gifticons/add}'|">기프티콘 추가</button>
+<button type="button" th:onclick="|location.href='@{/}'|">홈으로</button>
+<br>
+<br>
+
+<select id="gifticonState" onchange="filterGifticonTable(this.value)">
+    <option value="전체">전체</option>
+    <option value="사용됨">사용됨</option>
+    <option value="미사용">미사용</option>
+</select>
+
+<table id="gifticonTable">
+    <thead>
+        <tr>
+            <th>만료일</th>
+            <th>기프티콘명</th>
+            <th>사용 여부</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="gifticon : ${gifticons}">
+            <td th:text="${gifticon.expirationDate}">만료일</td>
+            <td>
+                <a href="gifticon.html"
+                   th:href="@{/gifticons/{gifticonId}(gifticonId=${gifticon.gifticonId})}"
+                   th:text="${gifticon.gifticonName}">
+                    기프티콘명
+                </a>
+            </td>
+            <td th:text="${gifticon.getIsUsed() ? '사용됨' : '미사용'}">
+                사용 여부
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

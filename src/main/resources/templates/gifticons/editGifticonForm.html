@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        li {display:inline-block}
+    </style>
+</head>
+<body>
+<h1>기프티콘 공유 프로젝트</h1>
+<h3>기프티콘 수정</h3>
+<hr>
+<br>
+
+<form th:action th:object="${form}" method="post" enctype="multipart/form-data">
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+    </div>
+
+    <div>
+        <label>기프티콘명</label>
+        <input type="text" th:field="*{gifticonName}">
+        <div th:errors="*{gifticonName}">기프티콘명 오류</div>
+    </div>
+
+    <div>
+        <label>만료일</label>
+        <input type="date" th:field="*{expirationDate}">
+        <div th:errors="*{expirationDate}">만료일 오류</div>
+    </div>
+
+    <div>
+        <label>기프티콘 이미지</label>
+        <input type="file" th:field="*{multipartFile}">
+        <div th:errors="*{multipartFile}">이미지 오류</div>
+    </div>
+
+    <button type="submit">
+        수정완료
+    </button>
+    <button type="button"
+            onclick="location.href='gifticons.html'"
+            th:onclick="|location.href='@{/gifticons/{gifticonId}(gifticonId=${gifticonId})}'|">
+        취소
+    </button>
+</form>
+
+</body>
+</html>

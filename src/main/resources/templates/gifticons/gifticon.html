@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        li {display:inline-block}
+    </style>
+</head>
+<body>
+<h1>기프티콘 공유 프로젝트</h1>
+<h3>기프티콘</h3>
+<hr>
+<br>
+
+<h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+<form th:action th:object="${gifticon}" method="post" enctype="multipart/form-data">
+    <div>
+        <label>기프티콘명</label>
+        <input type="text" th:field="*{gifticonName}" th:value="*{gifticonName}" readonly>
+    </div>
+
+    <div>
+        <label>만료일</label>
+        <input type="date" th:field="*{expirationDate}" th:value="*{expirationDate}" readonly>
+    </div>
+
+    <div>
+        <label>이미지</label>
+        <img th:src="|/images/*{imageFilename}|" width="300" height="300">
+    </div>
+</form>
+
+
+<ul>
+    <li>
+        <button type="button"
+                onclick="location.href='editGifticonForm.html'"
+                th:onclick="|location.href='@{/gifticons/{gifticonId}/edit(gifticonId=${gifticon.gifticonId})}'|">
+            수정
+        </button>
+    </li>
+    <li>
+        <form th:action="@{/gifticons/{gifticonId}/delete(gifticonId=${gifticon.gifticonId})}" method="post">
+            <button type="submit">
+                삭제
+            </button>
+        </form>
+    </li>
+    <li th:if="!${gifticon.isUsed}">
+        <form th:action="@{/gifticons/{gifticonId}/use(gifticonId=${gifticon.gifticonId})}" method="post">
+            <button type="submit">
+                사용완료
+            </button>
+        </form>
+    </li>
+    <li>
+        <button type="button"
+                onclick="location.href='gifticons.html'"
+                th:onclick="|location.href='@{/gifticons}'|">
+            돌아가기
+        </button>
+    </li>
+</ul>
+</body>
+</html>
